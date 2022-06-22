@@ -18,9 +18,3 @@ type Repository interface {
 	Reader
 	Writer
 }
-
-// UseCase interface
-type UseCase interface {
-	GetCoffeeBean(id ID) (*Bean, error)
-	CreateCoffeeBean(ctx context.Context, np NewCoffeeBean) (ID, error)
-}
