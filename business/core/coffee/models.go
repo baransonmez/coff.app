@@ -1,13 +1,14 @@
 package coffee
 
 import (
-	"github.com/baransonmez/coff.app/business/core/coffee/db"
 	"time"
-	"unsafe"
+
+	"github.com/google/uuid"
 )
 
+type ID = uuid.UUID
 type Bean struct {
-	ID          string    `json:"id"`
+	ID          ID        `json:"id"`
 	Name        string    `json:"name"`
 	Roaster     string    `json:"roaster"`
 	Origin      string    `json:"origin"`
@@ -23,9 +24,4 @@ type NewCoffeeBean struct {
 	Origin    string    `json:"origin" validate:"required"`
 	Price     int       `json:"price" validate:"required,gte=0"`
 	RoastDate time.Time `json:"roast_created"`
-}
-
-func toBean(dbPrd db.Bean) Bean {
-	pu := (*Bean)(unsafe.Pointer(&dbPrd))
-	return *pu
 }
