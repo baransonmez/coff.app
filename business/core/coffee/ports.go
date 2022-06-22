@@ -7,7 +7,7 @@ type Reader interface {
 	Get(id int32) (Bean, error)
 }
 
-// Writer book writer
+// Writer Coffee Bean writer
 type Writer interface {
 	Create(ctx context.Context, e *Bean) (int32 error)
 	//Update(ctx context.Context, e *Bean) error
