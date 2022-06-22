@@ -25,3 +25,17 @@ type NewCoffeeBean struct {
 	Price     int       `json:"price" validate:"required,gte=0"`
 	RoastDate time.Time `json:"roast_created"`
 }
+
+func (c NewCoffeeBean) toDomainModel() Bean {
+	coffeeBean := Bean{
+		ID:          uuid.New(),
+		Name:        c.Name,
+		Roaster:     c.Roaster,
+		Origin:      c.Origin,
+		RoastDate:   c.RoastDate,
+		DateCreated: time.Now(),
+		DateUpdated: time.Now(),
+	}
+
+	return coffeeBean
+}
