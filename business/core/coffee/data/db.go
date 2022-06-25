@@ -1,4 +1,4 @@
-package db
+package data
 
 import (
 	"context"
@@ -6,26 +6,26 @@ import (
 	"time"
 )
 
-type Store struct {
+type store struct {
 	//log          *zap.SugaredLogger
-	//db           sqlx.ExtContext
+	//data           sqlx.ExtContext
 	//isWithinTran bool
 }
 
-func NewStore() Store {
-	return Store{
+func NewStore() store {
+	return store{
 		//log: log,
-		//db:  db,
+		//data:  data,
 	}
 }
 
-func (s Store) Create(ctx context.Context, bean coffee.Bean) error {
+func (s store) Create(ctx context.Context, bean coffee.Bean) error {
 
 	return nil
 }
 
-func (s Store) Get(id coffee.ID) (coffee.Bean, error) {
-	coffeeBeanDB := Bean{
+func (s store) Get(id coffee.ID) (*coffee.Bean, error) {
+	coffeeBeanDB := &Bean{
 		ID:          "uuid.New()",
 		Name:        "np.Name",
 		Roaster:     "np.Roaster",

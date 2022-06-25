@@ -1,4 +1,4 @@
-package db
+package data
 
 import (
 	"github.com/baransonmez/coff.app/business/core/coffee"
@@ -7,17 +7,17 @@ import (
 )
 
 type Bean struct {
-	ID          string    `db:"id"`
-	Name        string    `db:"name"`
-	Roaster     string    `db:"roaster"`
-	Origin      string    `db:"origin"`
-	Price       int       `db:"price"`
-	RoastDate   time.Time `db:"roast_created"`
-	DateCreated time.Time `db:"date_created"`
-	DateUpdated time.Time `db:"date_updated"`
+	ID          string    `data:"id"`
+	Name        string    `data:"name"`
+	Roaster     string    `data:"roaster"`
+	Origin      string    `data:"origin"`
+	Price       int       `data:"price"`
+	RoastDate   time.Time `data:"roast_created"`
+	DateCreated time.Time `data:"date_created"`
+	DateUpdated time.Time `data:"date_updated"`
 }
 
-func toBean(dbPrd Bean) coffee.Bean {
+func toBean(dbPrd *Bean) *coffee.Bean {
 	uuidFromString, _ := StringToID(dbPrd.ID)
 	pu := coffee.Bean{
 		ID:          uuidFromString,
@@ -28,7 +28,7 @@ func toBean(dbPrd Bean) coffee.Bean {
 		DateCreated: dbPrd.DateCreated,
 		DateUpdated: dbPrd.DateUpdated,
 	}
-	return pu
+	return &pu
 }
 
 func StringToID(s string) (coffee.ID, error) {

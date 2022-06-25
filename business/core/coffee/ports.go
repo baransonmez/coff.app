@@ -4,7 +4,7 @@ import "context"
 
 // Reader interface
 type Reader interface {
-	Get(id ID) (Bean, error)
+	Get(id ID) (*Bean, error)
 }
 
 // Writer Coffee Bean writer
