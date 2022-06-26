@@ -17,7 +17,7 @@ func NewInMem() *inMem {
 	}
 }
 
-func (i *inMem) Create(ctx context.Context, bean coffee.Bean) error {
+func (i *inMem) Create(_ context.Context, bean coffee.Bean) error {
 	coffeeBeanForDB := &Bean{
 		ID:          bean.ID.String(),
 		Name:        bean.Name,

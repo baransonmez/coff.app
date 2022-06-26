@@ -19,7 +19,7 @@ func NewStore() store {
 	}
 }
 
-func (s store) Create(ctx context.Context, user user.User) error {
+func (s store) Create(_ context.Context, user user.User) error {
 
 	return nil
 }

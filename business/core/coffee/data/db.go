@@ -19,7 +19,7 @@ func NewStore() store {
 	}
 }
 
-func (s store) Create(ctx context.Context, bean coffee.Bean) error {
+func (s store) Create(_ context.Context, bean coffee.Bean) error {
 
 	return nil
 }

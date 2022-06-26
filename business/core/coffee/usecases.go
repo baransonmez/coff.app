@@ -25,7 +25,7 @@ func (c Service) CreateCoffeeBean(ctx context.Context, np NewCoffeeBean) (ID, er
 	return coffeeBean.ID, nil
 }
 
-func (c Service) GetCoffeeBean(ctx context.Context, id ID) (*Bean, error) {
+func (c Service) GetCoffeeBean(_ context.Context, id ID) (*Bean, error) {
 	bean, err := c.repository.Get(id)
 	if err != nil {
 		return nil, fmt.Errorf("get: %w", err)

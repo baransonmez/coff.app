@@ -17,7 +17,7 @@ func NewInMem() *inMem {
 	}
 }
 
-func (i *inMem) Create(ctx context.Context, user user.User) error {
+func (i *inMem) Create(_ context.Context, user user.User) error {
 	userForDb := &User{
 		ID:          user.ID.String(),
 		Name:        user.Name,

@@ -25,7 +25,7 @@ func (c Service) CreateNewUser(ctx context.Context, np NewUser) (ID, error) {
 	return user.ID, nil
 }
 
-func (c Service) GetUser(ctx context.Context, id ID) (*User, error) {
+func (c Service) GetUser(_ context.Context, id ID) (*User, error) {
 	bean, err := c.repository.Get(id)
 	if err != nil {
 		return nil, fmt.Errorf("get: %w", err)
