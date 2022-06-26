@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/baransonmez/coff.app/business/core/coffee"
 	coffeeData "github.com/baransonmez/coff.app/business/core/coffee/data"
+	"github.com/baransonmez/coff.app/business/core/recipe"
+	recipeData "github.com/baransonmez/coff.app/business/core/recipe/data"
 	"github.com/baransonmez/coff.app/business/core/user"
 	userData "github.com/baransonmez/coff.app/business/core/user/data"
 	"time"
@@ -21,7 +24,7 @@ func main() {
 		RoastDate: time.Now().AddDate(2, 3, 4),
 	})
 	bean, _ := service.GetCoffeeBean(nil, beanId)
-	fmt.Println(bean)
+	fmt.Println(prettyPrint(bean))
 
 	userStore := userData.NewInMem()
 	userService := user.NewService(userStore)
@@ -29,6 +32,21 @@ func main() {
 		Name: "Baran",
 	})
 	newUser, _ := userService.GetUser(nil, userId)
-	fmt.Println(newUser)
+	fmt.Println(prettyPrint(newUser))
 
+	recipeStore := recipeData.NewInMem()
+	recipeService := recipe.NewService(recipeStore)
+	recipeId, _ := recipeService.CreateNewRecipe(nil, recipe.NewRecipe{
+		UserID:      userId.String(),
+		CoffeeID:    beanId.String(),
+		Description: "30 seconds blooming",
+	})
+
+	newRecipe, _ := recipeService.GetRecipe(nil, recipeId)
+	fmt.Println(prettyPrint(newRecipe))
+}
+
+func prettyPrint(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "\t")
+	return string(s)
 }
