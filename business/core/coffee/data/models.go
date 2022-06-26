@@ -1,8 +1,8 @@
 package data
 
 import (
+	"github.com/baransonmez/coff.app/business/common"
 	"github.com/baransonmez/coff.app/business/core/coffee"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -18,7 +18,7 @@ type Bean struct {
 }
 
 func toBean(dbPrd *Bean) *coffee.Bean {
-	uuidFromString, _ := StringToID(dbPrd.ID)
+	uuidFromString, _ := common.StringToID(dbPrd.ID)
 	pu := coffee.Bean{
 		ID:          uuidFromString,
 		Name:        dbPrd.Name,
@@ -29,9 +29,4 @@ func toBean(dbPrd *Bean) *coffee.Bean {
 		DateUpdated: dbPrd.DateUpdated,
 	}
 	return &pu
-}
-
-func StringToID(s string) (coffee.ID, error) {
-	id, err := uuid.Parse(s)
-	return coffee.ID(id), err
 }

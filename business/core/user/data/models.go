@@ -1,8 +1,8 @@
 package data
 
 import (
+	"github.com/baransonmez/coff.app/business/common"
 	"github.com/baransonmez/coff.app/business/core/user"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -14,7 +14,7 @@ type User struct {
 }
 
 func toUser(dbPrd *User) *user.User {
-	uuidFromString, _ := StringToID(dbPrd.ID)
+	uuidFromString, _ := common.StringToID(dbPrd.ID)
 	pu := user.User{
 		ID:          uuidFromString,
 		Name:        dbPrd.Name,
@@ -22,9 +22,4 @@ func toUser(dbPrd *User) *user.User {
 		DateUpdated: dbPrd.DateUpdated,
 	}
 	return &pu
-}
-
-func StringToID(s string) (user.ID, error) {
-	id, err := uuid.Parse(s)
-	return user.ID(id), err
 }

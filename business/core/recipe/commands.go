@@ -1,6 +1,7 @@
 package recipe
 
 import (
+	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,8 +14,8 @@ type NewRecipe struct {
 }
 
 func (r NewRecipe) toDomainModel() Recipe {
-	userUuidFromString, _ := StringToID(r.UserID)
-	coffeeUuidFromString, _ := StringToID(r.CoffeeID)
+	userUuidFromString, _ := common.StringToID(r.UserID)
+	coffeeUuidFromString, _ := common.StringToID(r.CoffeeID)
 	recipe := Recipe{
 		ID:          uuid.New(),
 		Description: r.Description,
@@ -25,9 +26,4 @@ func (r NewRecipe) toDomainModel() Recipe {
 	}
 
 	return recipe
-}
-
-func StringToID(s string) (ID, error) {
-	id, err := uuid.Parse(s)
-	return ID(id), err
 }

@@ -1,8 +1,8 @@
 package data
 
 import (
+	"github.com/baransonmez/coff.app/business/common"
 	"github.com/baransonmez/coff.app/business/core/recipe"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -16,10 +16,10 @@ type Recipe struct {
 }
 
 func toRecipe(dbRecipe *Recipe) *recipe.Recipe {
-	uuidFromString, _ := StringToID(dbRecipe.ID)
-	userUuidFromString, _ := StringToID(dbRecipe.UserID)
-	coffeeUuidFromString, _ := StringToID(dbRecipe.CoffeeID)
-	recipe := recipe.Recipe{
+	uuidFromString, _ := common.StringToID(dbRecipe.ID)
+	userUuidFromString, _ := common.StringToID(dbRecipe.UserID)
+	coffeeUuidFromString, _ := common.StringToID(dbRecipe.CoffeeID)
+	dbToDomainModel := recipe.Recipe{
 		ID:          uuidFromString,
 		Description: dbRecipe.Description,
 		UserID:      userUuidFromString,
@@ -27,10 +27,5 @@ func toRecipe(dbRecipe *Recipe) *recipe.Recipe {
 		DateCreated: dbRecipe.DateCreated,
 		DateUpdated: dbRecipe.DateUpdated,
 	}
-	return &recipe
-}
-
-func StringToID(s string) (recipe.ID, error) {
-	id, err := uuid.Parse(s)
-	return recipe.ID(id), err
+	return &dbToDomainModel
 }
