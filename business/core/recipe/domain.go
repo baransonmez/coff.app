@@ -14,6 +14,12 @@ type Recipe struct {
 	UserID      user.ID   `json:"user_id"`
 	CoffeeID    coffee.ID `json:"coffee_id"`
 	Description string    `json:"desc"`
+	Steps       []Step    `json:"steps"`
 	DateCreated time.Time `json:"date_created"`
 	DateUpdated time.Time `json:"date_updated"`
+}
+
+type Step struct {
+	Description       string
+	DurationInSeconds int32
 }

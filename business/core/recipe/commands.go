@@ -11,6 +11,7 @@ type NewRecipe struct {
 	UserID      string `json:"user_id" validate:"required"`
 	CoffeeID    string `json:"coffee_id" validate:"required"`
 	Description string `json:"desc" validate:"required"`
+	Steps       []Step `json:"steps" validate:"required"`
 }
 
 func (r NewRecipe) toDomainModel() Recipe {
@@ -21,6 +22,7 @@ func (r NewRecipe) toDomainModel() Recipe {
 		Description: r.Description,
 		CoffeeID:    coffeeUuidFromString,
 		UserID:      userUuidFromString,
+		Steps:       r.Steps,
 		DateCreated: time.Now(),
 		DateUpdated: time.Now(),
 	}

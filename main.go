@@ -40,6 +40,15 @@ func main() {
 		UserID:      userId.String(),
 		CoffeeID:    beanId.String(),
 		Description: "30 seconds blooming",
+		Steps: []recipe.Step{
+			{
+				Description:       "blooming",
+				DurationInSeconds: 24,
+			},
+			{
+				Description:       "brewing",
+				DurationInSeconds: 76,
+			}},
 	})
 
 	newRecipe, _ := recipeService.GetRecipe(nil, recipeId)

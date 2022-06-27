@@ -25,6 +25,7 @@ func (i *inMem) Create(_ context.Context, recipe recipe.Recipe) error {
 		Description: recipe.Description,
 		UserID:      recipe.UserID.String(),
 		CoffeeID:    recipe.CoffeeID.String(),
+		Steps:       stepFrom(recipe.Steps),
 		DateCreated: recipe.DateCreated,
 		DateUpdated: recipe.DateUpdated,
 	}
