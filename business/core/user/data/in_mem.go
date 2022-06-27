@@ -4,16 +4,18 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/user"
+	"sync"
 )
 
 type inMem struct {
-	m map[user.ID]*User
+	store map[user.ID]*User
+	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var m = map[user.ID]*User{}
+	var emptyMap = map[user.ID]*User{}
 	return &inMem{
-		m: m,
+		store: emptyMap,
 	}
 }
 
@@ -24,13 +26,15 @@ func (i *inMem) Create(_ context.Context, user user.User) error {
 		DateCreated: user.DateCreated,
 		DateUpdated: user.DateUpdated,
 	}
-	i.m[user.ID] = userForDb
+	i.m.Lock()
+	defer i.m.Unlock()
+	i.store[user.ID] = userForDb
 	return nil
 }
 
 func (i *inMem) Get(id user.ID) (*user.User, error) {
-	if i.m[id] == nil {
+	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toUser(i.m[id]), nil
+	return toUser(i.store[id]), nil
 }

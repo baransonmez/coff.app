@@ -4,16 +4,18 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/coffee"
+	"sync"
 )
 
 type inMem struct {
-	m map[coffee.ID]*Bean
+	store map[coffee.ID]*Bean
+	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var m = map[coffee.ID]*Bean{}
+	var emptyMap = map[coffee.ID]*Bean{}
 	return &inMem{
-		m: m,
+		store: emptyMap,
 	}
 }
 
@@ -27,13 +29,15 @@ func (i *inMem) Create(_ context.Context, bean coffee.Bean) error {
 		DateCreated: bean.DateCreated,
 		DateUpdated: bean.DateUpdated,
 	}
-	i.m[bean.ID] = coffeeBeanForDB
+	i.m.Lock()
+	defer i.m.Unlock()
+	i.store[bean.ID] = coffeeBeanForDB
 	return nil
 }
 
 func (i *inMem) Get(id coffee.ID) (*coffee.Bean, error) {
-	if i.m[id] == nil {
+	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toBean(i.m[id]), nil
+	return toBean(i.store[id]), nil
 }

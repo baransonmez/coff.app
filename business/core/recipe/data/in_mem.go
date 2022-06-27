@@ -4,16 +4,18 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/recipe"
+	"sync"
 )
 
 type inMem struct {
-	m map[recipe.ID]*Recipe
+	store map[recipe.ID]*Recipe
+	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var m = map[recipe.ID]*Recipe{}
+	var emptyMap = map[recipe.ID]*Recipe{}
 	return &inMem{
-		m: m,
+		store: emptyMap,
 	}
 }
 
@@ -26,13 +28,15 @@ func (i *inMem) Create(_ context.Context, recipe recipe.Recipe) error {
 		DateCreated: recipe.DateCreated,
 		DateUpdated: recipe.DateUpdated,
 	}
-	i.m[recipe.ID] = recipeForDb
+	i.m.Lock()
+	defer i.m.Unlock()
+	i.store[recipe.ID] = recipeForDb
 	return nil
 }
 
 func (i *inMem) Get(id recipe.ID) (*recipe.Recipe, error) {
-	if i.m[id] == nil {
+	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toRecipe(i.m[id]), nil
+	return toRecipe(i.store[id]), nil
 }
