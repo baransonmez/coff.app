@@ -31,7 +31,7 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h Handlers) GetCoffee(w http.ResponseWriter, r *http.Request) error {
-	id := strings.TrimPrefix(r.URL.Path, "/getBean/")
+	id := strings.TrimPrefix(r.URL.Path, "/bean/")
 
 	ctx := r.Context()
 
