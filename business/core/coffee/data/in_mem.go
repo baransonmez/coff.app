@@ -25,6 +25,7 @@ func (i *inMem) Create(_ context.Context, bean coffee.Bean) error {
 		Name:        bean.Name,
 		Roaster:     bean.Roaster,
 		Origin:      bean.Origin,
+		Price:       bean.Price,
 		RoastDate:   bean.RoastDate,
 		DateCreated: bean.DateCreated,
 		DateUpdated: bean.DateUpdated,

@@ -21,6 +21,7 @@ func (c NewCoffeeBean) toDomainModel() Bean {
 		Roaster:     c.Roaster,
 		Origin:      c.Origin,
 		RoastDate:   c.RoastDate,
+		Price:       c.Price,
 		DateCreated: time.Now(),
 		DateUpdated: time.Now(),
 	}

@@ -25,6 +25,7 @@ func toBean(dbPrd *Bean) *coffee.Bean {
 		Roaster:     dbPrd.Roaster,
 		Origin:      dbPrd.Origin,
 		RoastDate:   dbPrd.RoastDate,
+		Price:       dbPrd.Price,
 		DateCreated: dbPrd.DateCreated,
 		DateUpdated: dbPrd.DateUpdated,
 	}
