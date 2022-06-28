@@ -17,13 +17,21 @@ func main() {
 		CoffeeService: coffee.NewService(coffStore),
 	}
 
-	h := func(w http.ResponseWriter, r *http.Request) {
+	create := func(w http.ResponseWriter, r *http.Request) {
 		err := pgh.Create(w, r)
 		if err != nil {
 			return
 		}
 	}
+
+	get := func(w http.ResponseWriter, r *http.Request) {
+		err := pgh.GetCoffee(w, r)
+		if err != nil {
+			return
+		}
+	}
 	mux := http.NewServeMux()
-	mux.HandleFunc("/bean", h)
+	mux.HandleFunc("/getBean/", get)
+	mux.HandleFunc("/bean", create)
 	log.Fatal(http.ListenAndServe(":8080", mux))
 }

@@ -2,9 +2,11 @@ package coffee
 
 import (
 	"fmt"
+	"github.com/baransonmez/coff.app/business/common"
 	"github.com/baransonmez/coff.app/business/core/coffee"
 	"github.com/baransonmez/coff.app/foundation/web"
 	"net/http"
+	"strings"
 )
 
 type Handlers struct {
@@ -26,4 +28,18 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	return web.Respond(w, prod, http.StatusCreated)
+}
+
+func (h Handlers) GetCoffee(w http.ResponseWriter, r *http.Request) error {
+	id := strings.TrimPrefix(r.URL.Path, "/getBean/")
+
+	ctx := r.Context()
+
+	id2, _ := common.StringToID(id)
+	prod, err := h.CoffeeService.GetCoffeeBean(ctx, id2)
+	if err != nil {
+		return fmt.Errorf("getting coffee bean, id[%+v]: %w", id, err)
+	}
+
+	return web.Respond(w, prod, http.StatusOK)
 }
