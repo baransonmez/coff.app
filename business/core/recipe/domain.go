@@ -20,6 +20,6 @@ type Recipe struct {
 }
 
 type Step struct {
-	Description       string
-	DurationInSeconds int32
+	Description       string `json:"desc"`
+	DurationInSeconds int32  `json:"duration"`
 }
