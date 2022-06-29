@@ -12,8 +12,9 @@ func Handle(h Res) http.HandlerFunc {
 		err := h(w, r)
 		if err != nil {
 			log.Printf("response failed: %v", err)
+			_, err := w.Write([]byte(err.Error()))
 			if err != nil {
-				return
+				log.Printf("response failed: %v", err)
 			}
 		}
 	}
