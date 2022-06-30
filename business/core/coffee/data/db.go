@@ -7,16 +7,10 @@ import (
 )
 
 type store struct {
-	//log          *zap.SugaredLogger
-	//data           sqlx.ExtContext
-	//isWithinTran bool
 }
 
 func NewStore() store {
-	return store{
-		//log: log,
-		//data:  data,
-	}
+	return store{}
 }
 
 func (s store) Create(_ context.Context, bean coffee.Bean) error {
