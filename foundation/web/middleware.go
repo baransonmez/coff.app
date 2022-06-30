@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-type DomainFunc func(w http.ResponseWriter, r *http.Request) error
+type ApiHandler func(w http.ResponseWriter, r *http.Request) error
 
-func Handle(d DomainFunc) http.HandlerFunc {
+func Handle(h ApiHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := d(w, r)
+		err := h(w, r)
 		if err != nil {
 			log.Printf("response failed: %v", err)
 			_, err := w.Write([]byte(err.Error()))
