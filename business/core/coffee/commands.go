@@ -14,7 +14,7 @@ type NewCoffeeBean struct {
 	RoastDate time.Time `json:"roast_created"`
 }
 
-func (c NewCoffeeBean) toDomainModel() Bean {
+func (c NewCoffeeBean) toDomainModel() (*Bean, error) {
 	coffeeBean := Bean{
 		ID:          uuid.New(),
 		Name:        c.Name,
@@ -25,6 +25,9 @@ func (c NewCoffeeBean) toDomainModel() Bean {
 		DateCreated: time.Now(),
 		DateUpdated: time.Now(),
 	}
-
-	return coffeeBean
+	err := coffeeBean.validate()
+	if err != nil {
+		return nil, err
+	}
+	return &coffeeBean, nil
 }
