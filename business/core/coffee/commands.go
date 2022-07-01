@@ -2,6 +2,7 @@ package coffee
 
 import (
 	"errors"
+	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,6 +15,8 @@ type NewCoffeeBean struct {
 	Price     int       `json:"price"`
 	RoastDate time.Time `json:"roast_created"`
 }
+
+var _ common.Command = &NewCoffeeBean{}
 
 func (c NewCoffeeBean) toDomainModel() *Bean {
 	coffeeBean := Bean{
@@ -30,7 +33,7 @@ func (c NewCoffeeBean) toDomainModel() *Bean {
 	return &coffeeBean
 }
 
-func (c *NewCoffeeBean) validate() error {
+func (c *NewCoffeeBean) Validate() error {
 	if c.Name == "" {
 		return errors.New("bean name cannot be empty")
 	}

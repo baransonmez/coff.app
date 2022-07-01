@@ -15,6 +15,8 @@ type NewRecipe struct {
 	Steps       []Step `json:"steps"`
 }
 
+var _ common.Command = &NewRecipe{}
+
 func (r NewRecipe) toDomainModel() Recipe {
 	userUuidFromString, _ := common.StringToID(r.UserID)
 	coffeeUuidFromString, _ := common.StringToID(r.CoffeeID)
@@ -31,7 +33,7 @@ func (r NewRecipe) toDomainModel() Recipe {
 	return recipe
 }
 
-func (r *NewRecipe) validate() error {
+func (r *NewRecipe) Validate() error {
 	if r.UserID == "" {
 		return errors.New("user_id cannot be empty")
 	}

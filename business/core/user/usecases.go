@@ -17,7 +17,7 @@ func NewService(r Repository) *Service {
 }
 
 func (c Service) CreateNewUser(ctx context.Context, np NewUser) (ID, error) {
-	err := np.validate()
+	err := np.Validate()
 	if err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}

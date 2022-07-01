@@ -17,7 +17,7 @@ func NewService(r Repository) *Service {
 }
 
 func (c Service) CreateCoffeeBean(ctx context.Context, np NewCoffeeBean) (ID, error) {
-	err := np.validate()
+	err := np.Validate()
 	if err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}

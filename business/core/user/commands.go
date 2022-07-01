@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
 	"github.com/google/uuid"
@@ -10,6 +11,8 @@ import (
 type NewUser struct {
 	Name string `json:"name"`
 }
+
+var _ common.Command = &NewUser{}
 
 func (u NewUser) toDomainModel() User {
 	user := User{
@@ -22,7 +25,7 @@ func (u NewUser) toDomainModel() User {
 	return user
 }
 
-func (u *NewUser) validate() error {
+func (u *NewUser) Validate() error {
 	if u.Name == "" {
 		return errors.New("user name cannot be empty")
 	}
