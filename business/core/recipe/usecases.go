@@ -17,6 +17,10 @@ func NewService(r Repository) *Service {
 }
 
 func (c Service) CreateNewRecipe(ctx context.Context, np NewRecipe) (ID, error) {
+	err := np.validate()
+	if err != nil {
+		return uuid.UUID{}, fmt.Errorf("create: %w", err)
+	}
 	recipe := np.toDomainModel()
 	if err := c.repository.Create(ctx, recipe); err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)

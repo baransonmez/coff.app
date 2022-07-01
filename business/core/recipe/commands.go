@@ -1,6 +1,7 @@
 package recipe
 
 import (
+	"errors"
 	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
@@ -8,10 +9,10 @@ import (
 )
 
 type NewRecipe struct {
-	UserID      string `json:"user_id" validate:"required"`
-	CoffeeID    string `json:"coffee_id" validate:"required"`
-	Description string `json:"desc" validate:"required"`
-	Steps       []Step `json:"steps" validate:"required"`
+	UserID      string `json:"user_id"`
+	CoffeeID    string `json:"coffee_id"`
+	Description string `json:"desc"`
+	Steps       []Step `json:"steps"`
 }
 
 func (r NewRecipe) toDomainModel() Recipe {
@@ -28,4 +29,22 @@ func (r NewRecipe) toDomainModel() Recipe {
 	}
 
 	return recipe
+}
+
+func (r *NewRecipe) validate() error {
+	if r.UserID == "" {
+		return errors.New("user_id cannot be empty")
+	}
+	if r.CoffeeID == "" {
+		return errors.New("coffee_id cannot be empty")
+	}
+	if r.Description == "" {
+		return errors.New("description cannot be empty")
+	}
+
+	if len(r.Steps) < 1 {
+		return errors.New("length of steps cannot be smaller than 1")
+	}
+
+	return nil
 }

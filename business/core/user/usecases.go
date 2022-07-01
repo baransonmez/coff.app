@@ -17,6 +17,10 @@ func NewService(r Repository) *Service {
 }
 
 func (c Service) CreateNewUser(ctx context.Context, np NewUser) (ID, error) {
+	err := np.validate()
+	if err != nil {
+		return uuid.UUID{}, fmt.Errorf("create: %w", err)
+	}
 	user := np.toDomainModel()
 	if err := c.repository.Create(ctx, user); err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)

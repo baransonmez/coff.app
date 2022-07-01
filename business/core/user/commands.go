@@ -1,13 +1,14 @@
 package user
 
 import (
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type NewUser struct {
-	Name string `json:"name" validate:"required"`
+	Name string `json:"name"`
 }
 
 func (u NewUser) toDomainModel() User {
@@ -19,4 +20,11 @@ func (u NewUser) toDomainModel() User {
 	}
 
 	return user
+}
+
+func (u *NewUser) validate() error {
+	if u.Name == "" {
+		return errors.New("user name cannot be empty")
+	}
+	return nil
 }

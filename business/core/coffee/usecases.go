@@ -17,10 +17,12 @@ func NewService(r Repository) *Service {
 }
 
 func (c Service) CreateCoffeeBean(ctx context.Context, np NewCoffeeBean) (ID, error) {
-	coffeeBean, err := np.toDomainModel()
+	err := np.validate()
 	if err != nil {
-		return uuid.UUID{}, err
+		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}
+	coffeeBean := np.toDomainModel()
+
 	if err := c.repository.Create(ctx, *coffeeBean); err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}

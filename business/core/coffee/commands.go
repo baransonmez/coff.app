@@ -1,20 +1,21 @@
 package coffee
 
 import (
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type NewCoffeeBean struct {
-	Name      string    `json:"name" validate:"required"`
-	Roaster   string    `json:"roaster" validate:"required"`
-	Origin    string    `json:"origin" validate:"required"`
-	Price     int       `json:"price" validate:"required,gte=0"`
+	Name      string    `json:"name"`
+	Roaster   string    `json:"roaster"`
+	Origin    string    `json:"origin"`
+	Price     int       `json:"price"`
 	RoastDate time.Time `json:"roast_created"`
 }
 
-func (c NewCoffeeBean) toDomainModel() (*Bean, error) {
+func (c NewCoffeeBean) toDomainModel() *Bean {
 	coffeeBean := Bean{
 		ID:          uuid.New(),
 		Name:        c.Name,
@@ -25,9 +26,24 @@ func (c NewCoffeeBean) toDomainModel() (*Bean, error) {
 		DateCreated: time.Now(),
 		DateUpdated: time.Now(),
 	}
-	err := coffeeBean.validate()
-	if err != nil {
-		return nil, err
+
+	return &coffeeBean
+}
+
+func (c *NewCoffeeBean) validate() error {
+	if c.Name == "" {
+		return errors.New("bean name cannot be empty")
 	}
-	return &coffeeBean, nil
+	if c.Origin == "" {
+		return errors.New("bean origin cannot be empty")
+	}
+	if c.Roaster == "" {
+		return errors.New("bean roaster cannot be empty")
+	}
+
+	if c.Price < 1 {
+		return errors.New("bean price cannot be smaller than 1")
+	}
+
+	return nil
 }
