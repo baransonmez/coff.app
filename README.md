@@ -31,9 +31,10 @@ have separated business rules from infrastructure codes.
 │       ├── coffee
 │       │   ├── commands.go
 │       │   ├── data
-│       │   │   ├── db.go
-│       │   │   ├── in_mem.go
-│       │   │   └── models.go
+│       │   │   ├── models.go
+│       │   │   └── persistence
+│       │   │       ├── db.go
+│       │   │       └── in_mem.go
 │       │   ├── domain.go
 │       │   ├── ports.go
 │       │   └── usecases.go
