@@ -2,17 +2,7 @@ package coffee
 
 import "context"
 
-// Reader interface
-type Reader interface {
-	Get(id ID) (*Bean, error)
-}
-
-// Writer Coffee Bean writer
-type Writer interface {
-	Create(ctx context.Context, e Bean) (ID error)
-}
-
 type Repository interface {
-	Reader
-	Writer
+	Get(id ID) (*Bean, error)
+	Create(ctx context.Context, e Bean) (ID error)
 }
