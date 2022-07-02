@@ -1,26 +1,27 @@
-package data
+package persistence
 
 import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/coffee"
+	"github.com/baransonmez/coff.app/business/core/coffee/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[coffee.ID]*Bean
+	store map[coffee.ID]*data.Bean
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[coffee.ID]*Bean{}
+	var emptyMap = map[coffee.ID]*data.Bean{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, bean coffee.Bean) error {
-	coffeeBeanForDB := &Bean{
+	coffeeBeanForDB := &data.Bean{
 		ID:          bean.ID.String(),
 		Name:        bean.Name,
 		Roaster:     bean.Roaster,
@@ -40,5 +41,5 @@ func (i *inMem) Get(id coffee.ID) (*coffee.Bean, error) {
 	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toBean(i.store[id]), nil
+	return i.store[id].ToBean(), nil
 }

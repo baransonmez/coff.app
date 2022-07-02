@@ -1,26 +1,27 @@
-package data
+package persistence
 
 import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/user"
+	"github.com/baransonmez/coff.app/business/core/user/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[user.ID]*User
+	store map[user.ID]*data.User
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[user.ID]*User{}
+	var emptyMap = map[user.ID]*data.User{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, user user.User) error {
-	userForDb := &User{
+	userForDb := &data.User{
 		ID:          user.ID.String(),
 		Name:        user.Name,
 		DateCreated: user.DateCreated,
@@ -36,5 +37,5 @@ func (i *inMem) Get(id user.ID) (*user.User, error) {
 	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toUser(i.store[id]), nil
+	return i.store[id].ToUser(), nil
 }

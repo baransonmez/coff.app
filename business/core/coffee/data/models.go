@@ -17,7 +17,7 @@ type Bean struct {
 	DateUpdated time.Time `data:"date_updated"`
 }
 
-func toBean(dbPrd *Bean) *coffee.Bean {
+func (dbPrd *Bean) ToBean() *coffee.Bean {
 	uuidFromString, _ := common.StringToID(dbPrd.ID)
 	pu := coffee.Bean{
 		ID:          uuidFromString,

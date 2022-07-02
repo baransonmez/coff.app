@@ -13,7 +13,7 @@ type User struct {
 	DateUpdated time.Time `data:"date_updated"`
 }
 
-func toUser(dbPrd *User) *user.User {
+func (dbPrd *User) ToUser() *user.User {
 	uuidFromString, _ := common.StringToID(dbPrd.ID)
 	pu := user.User{
 		ID:          uuidFromString,

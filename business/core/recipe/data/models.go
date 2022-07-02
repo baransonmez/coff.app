@@ -21,7 +21,7 @@ type Step struct {
 	DurationInSeconds int32  `data:"duration"`
 }
 
-func toRecipe(dbRecipe *Recipe) *recipe.Recipe {
+func (dbRecipe *Recipe) ToRecipe() *recipe.Recipe {
 	uuidFromString, _ := common.StringToID(dbRecipe.ID)
 	userUuidFromString, _ := common.StringToID(dbRecipe.UserID)
 	coffeeUuidFromString, _ := common.StringToID(dbRecipe.CoffeeID)
@@ -30,31 +30,39 @@ func toRecipe(dbRecipe *Recipe) *recipe.Recipe {
 		Description: dbRecipe.Description,
 		UserID:      userUuidFromString,
 		CoffeeID:    coffeeUuidFromString,
-		Steps:       stepTo(dbRecipe.Steps),
+		Steps:       stepsToDomainModel(dbRecipe.Steps),
 		DateCreated: dbRecipe.DateCreated,
 		DateUpdated: dbRecipe.DateUpdated,
 	}
 	return &dbToDomainModel
 }
 
-func stepTo(steps []Step) []recipe.Step {
+func stepsToDomainModel(steps []Step) []recipe.Step {
 	var stepsVO []recipe.Step
 	for _, s := range steps {
-		stepsVO = append(stepsVO, recipe.Step{
-			Description:       s.Description,
-			DurationInSeconds: s.DurationInSeconds,
-		})
+		stepsVO = append(stepsVO, s.stepToDomainModel())
 	}
 	return stepsVO
 }
 
-func stepFrom(stepsDO []recipe.Step) []Step {
+func (s Step) stepToDomainModel() recipe.Step {
+	return recipe.Step{
+		Description:       s.Description,
+		DurationInSeconds: s.DurationInSeconds,
+	}
+}
+
+func StepsFromDomainModel(stepsDO []recipe.Step) []Step {
 	var stepsDB []Step
 	for _, s := range stepsDO {
-		stepsDB = append(stepsDB, Step{
-			Description:       s.Description,
-			DurationInSeconds: s.DurationInSeconds,
-		})
+		stepsDB = append(stepsDB, stepFromDomainModel(s))
 	}
 	return stepsDB
+}
+
+func stepFromDomainModel(s recipe.Step) Step {
+	return Step{
+		Description:       s.Description,
+		DurationInSeconds: s.DurationInSeconds,
+	}
 }

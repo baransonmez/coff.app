@@ -1,31 +1,32 @@
-package data
+package persistence
 
 import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/recipe"
+	"github.com/baransonmez/coff.app/business/core/recipe/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[recipe.ID]*Recipe
+	store map[recipe.ID]*data.Recipe
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[recipe.ID]*Recipe{}
+	var emptyMap = map[recipe.ID]*data.Recipe{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, recipe recipe.Recipe) error {
-	recipeForDb := &Recipe{
+	recipeForDb := &data.Recipe{
 		ID:          recipe.ID.String(),
 		Description: recipe.Description,
 		UserID:      recipe.UserID.String(),
 		CoffeeID:    recipe.CoffeeID.String(),
-		Steps:       stepFrom(recipe.Steps),
+		Steps:       data.StepsFromDomainModel(recipe.Steps),
 		DateCreated: recipe.DateCreated,
 		DateUpdated: recipe.DateUpdated,
 	}
@@ -39,5 +40,5 @@ func (i *inMem) Get(id recipe.ID) (*recipe.Recipe, error) {
 	if i.store[id] == nil {
 		return nil, errors.New("not found")
 	}
-	return toRecipe(i.store[id]), nil
+	return i.store[id].ToRecipe(), nil
 }

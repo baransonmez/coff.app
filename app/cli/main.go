@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/baransonmez/coff.app/business/core/coffee"
-	coffeeData "github.com/baransonmez/coff.app/business/core/coffee/data"
+	coffeeData "github.com/baransonmez/coff.app/business/core/coffee/data/persistence"
 	"github.com/baransonmez/coff.app/business/core/recipe"
-	recipeData "github.com/baransonmez/coff.app/business/core/recipe/data"
+	recipeData "github.com/baransonmez/coff.app/business/core/recipe/data/persistence"
 	"github.com/baransonmez/coff.app/business/core/user"
-	userData "github.com/baransonmez/coff.app/business/core/user/data"
+	userData "github.com/baransonmez/coff.app/business/core/user/data/persistence"
 	"time"
 )
 
