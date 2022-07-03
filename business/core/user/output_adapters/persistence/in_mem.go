@@ -4,24 +4,23 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/user"
-	"github.com/baransonmez/coff.app/business/core/user/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[user.ID]*data.User
+	store map[user.ID]*User
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[user.ID]*data.User{}
+	var emptyMap = map[user.ID]*User{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, user user.User) error {
-	userForDb := &data.User{
+	userForDb := &User{
 		ID:          user.ID.String(),
 		Name:        user.Name,
 		DateCreated: user.DateCreated,

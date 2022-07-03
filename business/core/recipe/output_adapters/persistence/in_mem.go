@@ -4,29 +4,28 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/recipe"
-	"github.com/baransonmez/coff.app/business/core/recipe/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[recipe.ID]*data.Recipe
+	store map[recipe.ID]*Recipe
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[recipe.ID]*data.Recipe{}
+	var emptyMap = map[recipe.ID]*Recipe{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, recipe recipe.Recipe) error {
-	recipeForDb := &data.Recipe{
+	recipeForDb := &Recipe{
 		ID:          recipe.ID.String(),
 		Description: recipe.Description,
 		UserID:      recipe.UserID.String(),
 		CoffeeID:    recipe.CoffeeID.String(),
-		Steps:       data.StepsFromDomainModel(recipe.Steps),
+		Steps:       StepsFromDomainModel(recipe.Steps),
 		DateCreated: recipe.DateCreated,
 		DateUpdated: recipe.DateUpdated,
 	}

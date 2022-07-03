@@ -1,4 +1,4 @@
-package data
+package persistence
 
 import (
 	"github.com/baransonmez/coff.app/business/common"

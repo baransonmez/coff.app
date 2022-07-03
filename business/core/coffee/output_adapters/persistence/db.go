@@ -3,7 +3,6 @@ package persistence
 import (
 	"context"
 	"github.com/baransonmez/coff.app/business/core/coffee"
-	"github.com/baransonmez/coff.app/business/core/coffee/data"
 	"time"
 )
 
@@ -20,7 +19,7 @@ func (s store) Create(_ context.Context, bean coffee.Bean) error {
 }
 
 func (s store) Get(id coffee.ID) (*coffee.Bean, error) {
-	coffeeBeanDB := &data.Bean{
+	coffeeBeanDB := &Bean{
 		ID:          "uuid.New()",
 		Name:        "np.Name",
 		Roaster:     "np.Roaster",

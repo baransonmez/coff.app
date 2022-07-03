@@ -4,24 +4,23 @@ import (
 	"context"
 	"errors"
 	"github.com/baransonmez/coff.app/business/core/coffee"
-	"github.com/baransonmez/coff.app/business/core/coffee/data"
 	"sync"
 )
 
 type inMem struct {
-	store map[coffee.ID]*data.Bean
+	store map[coffee.ID]*Bean
 	m     sync.Mutex
 }
 
 func NewInMem() *inMem {
-	var emptyMap = map[coffee.ID]*data.Bean{}
+	var emptyMap = map[coffee.ID]*Bean{}
 	return &inMem{
 		store: emptyMap,
 	}
 }
 
 func (i *inMem) Create(_ context.Context, bean coffee.Bean) error {
-	coffeeBeanForDB := &data.Bean{
+	coffeeBeanForDB := &Bean{
 		ID:          bean.ID.String(),
 		Name:        bean.Name,
 		Roaster:     bean.Roaster,

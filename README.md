@@ -11,7 +11,7 @@ dependencies.
 ## Structure
 
 While planning this repository, my main priority was to separate between business rules and infrastructure codes.
-Codes under Business package include domain, use-cases and output adapters(represented by the inner data package).
+Codes under Business package include domain, use-cases and output adapters.
 Domain and use-cases are
 written in a way that does not depend on output adapters.
 The reason why output adapters are not moved to a different directory is that I
@@ -30,12 +30,12 @@ have separated business rules from infrastructure codes.
 │   └── core
 │       ├── coffee
 │       │   ├── commands.go
-│       │   ├── data
-│       │   │   ├── models.go
+│       │   ├── domain.go
+│       │   ├── output_adapters
 │       │   │   └── persistence
 │       │   │       ├── db.go
-│       │   │       └── in_mem.go
-│       │   ├── domain.go
+│       │   │       ├── in_mem.go
+│       │   │       └── models.go
 │       │   ├── ports.go
 │       │   └── usecases.go
 .       .   .

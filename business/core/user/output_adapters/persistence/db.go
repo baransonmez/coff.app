@@ -3,7 +3,6 @@ package persistence
 import (
 	"context"
 	"github.com/baransonmez/coff.app/business/core/user"
-	"github.com/baransonmez/coff.app/business/core/user/data"
 	"time"
 )
 
@@ -20,7 +19,7 @@ func (s store) Create(_ context.Context, user user.User) error {
 }
 
 func (s store) Get(id user.ID) (*user.User, error) {
-	userDB := &data.User{
+	userDB := &User{
 		ID:          "uuid.New()",
 		Name:        "np.Name",
 		DateCreated: time.Now(),
