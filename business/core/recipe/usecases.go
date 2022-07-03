@@ -7,12 +7,14 @@ import (
 )
 
 type Service struct {
-	repository Repository
+	recipeRepository Repository
+	userRepository   UserRepository
 }
 
-func NewService(r Repository) *Service {
+func NewService(r Repository, u UserRepository) *Service {
 	return &Service{
-		repository: r,
+		recipeRepository: r,
+		userRepository:   u,
 	}
 }
 
@@ -21,8 +23,12 @@ func (c Service) CreateNewRecipe(ctx context.Context, np NewRecipe) (ID, error) 
 	if err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}
+	_, err = c.userRepository.IsValidUser(ctx, np.UserID)
+	if err != nil {
+		return uuid.UUID{}, fmt.Errorf("create: %w", err)
+	}
 	recipe := np.toDomainModel()
-	if err := c.repository.Create(ctx, recipe); err != nil {
+	if err := c.recipeRepository.Create(ctx, recipe); err != nil {
 		return uuid.UUID{}, fmt.Errorf("create: %w", err)
 	}
 
@@ -30,7 +36,7 @@ func (c Service) CreateNewRecipe(ctx context.Context, np NewRecipe) (ID, error) 
 }
 
 func (c Service) GetRecipe(_ context.Context, id ID) (*Recipe, error) {
-	recipe, err := c.repository.Get(id)
+	recipe, err := c.recipeRepository.Get(id)
 	if err != nil {
 		return nil, fmt.Errorf("get: %w", err)
 	}

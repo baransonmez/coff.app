@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option go_package = "user/pb";
+
+message IsValidUserRequest {
+  string uuid = 1;
+}
+message IsValidResponse {bool isValid = 1;}
+
+service User {
+  rpc IsValidUser(IsValidUserRequest) returns (IsValidResponse) {}
+}

@@ -35,7 +35,7 @@ func main() {
 	fmt.Println(prettyPrint(newUser))
 
 	recipeStore := recipeData.NewInMem()
-	recipeService := recipe.NewService(recipeStore)
+	recipeService := recipe.NewService(recipeStore, nil)
 	recipeId, _ := recipeService.CreateNewRecipe(nil, recipe.NewRecipe{
 		UserID:      userId.String(),
 		CoffeeID:    beanId.String(),
