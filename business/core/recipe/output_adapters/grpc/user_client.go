@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/baransonmez/coff.app/app/web/grpc/user/pb"
+	"github.com/baransonmez/coff.app/app/web/user/input_adapters/grpc/pb"
 	"google.golang.org/grpc"
 )
 

@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"github.com/baransonmez/coff.app/app/web/grpc/user/pb"
+	"github.com/baransonmez/coff.app/app/web/user/input_adapters/grpc/pb"
 	"github.com/baransonmez/coff.app/business/core/user"
 	"github.com/google/uuid"
 )
