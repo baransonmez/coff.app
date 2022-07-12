@@ -12,7 +12,6 @@ type Handlers struct {
 }
 
 func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
-
 	var nu user.NewUser
 	if err := web.Decode(r, &nu); err != nil {
 		return fmt.Errorf("unable to decode payload: %w", err)
@@ -29,7 +28,6 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h Handlers) Get(w http.ResponseWriter, r *http.Request) error {
-
 	ctx := r.Context()
 
 	userUUID, err := web.ReadIDParam(r)

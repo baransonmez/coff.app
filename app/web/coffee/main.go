@@ -12,13 +12,12 @@ import (
 )
 
 func main() {
-
 	coffStore := coffeeData.NewInMem()
-	coffeeApi := api.Handlers{
+	coffeeAPI := api.Handlers{
 		CoffeeService: coffee.NewService(coffStore),
 	}
 
-	handler := routes(coffeeApi)
+	handler := routes(coffeeAPI)
 
 	servPort := ":8085"
 	srv := &http.Server{
@@ -29,13 +28,14 @@ func main() {
 	}
 
 	log.Printf("starting server on %s\n", servPort)
+
 	err := srv.ListenAndServe()
 	log.Fatal(err)
 }
 
-func routes(beanApi api.Handlers) *httprouter.Router {
+func routes(beanAPI api.Handlers) *httprouter.Router {
 	router := httprouter.New()
-	router.HandlerFunc(http.MethodPost, "/v1/bean", web.Handle(beanApi.Create))
-	router.HandlerFunc(http.MethodGet, "/v1/bean/:id", web.Handle(beanApi.GetCoffee))
+	router.HandlerFunc(http.MethodPost, "/v1/bean", web.Handle(beanAPI.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/bean/:id", web.Handle(beanAPI.GetCoffee))
 	return router
 }

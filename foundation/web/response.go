@@ -13,10 +13,11 @@ func Respond(w http.ResponseWriter, data any, statusCode int) error {
 	}
 
 	jsonData, err := json.MarshalIndent(data, "", "\t")
-	jsonData = append(jsonData, '\n')
 	if err != nil {
 		return err
 	}
+
+	jsonData = append(jsonData, '\n')
 
 	w.Header().Set("Content-Type", "application/json")
 

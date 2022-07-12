@@ -22,6 +22,7 @@ func Param(r *http.Request, key string) string {
 func Decode(r *http.Request, val any) error {
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
+
 	if err := decoder.Decode(val); err != nil {
 		return err
 	}
@@ -36,6 +37,6 @@ func ReadIDParam(r *http.Request) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.UUID{}, err
 	}
-	return id, nil
 
+	return id, nil
 }

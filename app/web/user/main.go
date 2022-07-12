@@ -16,17 +16,19 @@ import (
 )
 
 func main() {
-
 	userStore := userData.NewInMem()
-	userApi := api.Handlers{UserService: user.NewService(userStore)}
+	userAPI := api.Handlers{UserService: user.NewService(userStore)}
 
 	connAddress := "0.0.0.0:50051"
 	lis, err := net.Listen("tcp", connAddress)
+
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	grpcServer := grpc.NewServer()
 	pb.RegisterUserServer(grpcServer, &userGrpc.Server{UserService: user.NewService(userStore)})
+
 	go func() {
 		err := grpcServer.Serve(lis)
 		if err != nil {
@@ -34,7 +36,7 @@ func main() {
 		}
 	}()
 
-	handler := routes(userApi)
+	handler := routes(userAPI)
 	servPort := ":8080"
 	srv := &http.Server{
 		Addr:         servPort,
@@ -44,6 +46,7 @@ func main() {
 	}
 
 	log.Printf("starting server on %s\n", servPort)
+
 	err = srv.ListenAndServe()
 	log.Fatal(err)
 }

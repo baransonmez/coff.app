@@ -12,7 +12,6 @@ type Handlers struct {
 }
 
 func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
-
 	var ncb coffee.NewCoffeeBean
 	if err := web.Decode(r, &ncb); err != nil {
 		return fmt.Errorf("unable to decode payload: %w", err)
@@ -29,7 +28,6 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h Handlers) GetCoffee(w http.ResponseWriter, r *http.Request) error {
-
 	ctx := r.Context()
 	id, err := web.ReadIDParam(r)
 	if err != nil {

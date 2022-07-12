@@ -15,37 +15,43 @@ import (
 )
 
 func main() {
-
 	connAddress := "0.0.0.0:50051"
 	conn, err := grpc.Dial(connAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
 	if err != nil {
 		log.Fatalf("fail to dial: %v", err)
 	}
-	defer conn.Close()
+
+	defer func(conn *grpc.ClientConn) {
+		err := conn.Close()
+		if err != nil {
+
+		}
+	}(conn)
 
 	recipeStore := recipeData.NewInMem()
 	userClient := userClientGrpc.NewClient(conn)
-	recipeApi := api.Handlers{RecipeService: recipe.NewService(recipeStore, userClient)}
+	recipeAPI := api.Handlers{RecipeService: recipe.NewService(recipeStore, userClient)}
 
-	handler := routes(recipeApi)
+	handler := routes(recipeAPI)
 
 	servPort := ":8089"
+	log.Printf("starting server on %s\n", servPort)
+
 	srv := &http.Server{
 		Addr:         servPort,
 		Handler:      handler,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 45 * time.Second,
 	}
-
-	log.Printf("starting server on %s\n", servPort)
 	err = srv.ListenAndServe()
 	log.Fatal(err)
 
 }
 
-func routes(recipeApi api.Handlers) *httprouter.Router {
+func routes(recipeAPI api.Handlers) *httprouter.Router {
 	router := httprouter.New()
-	router.HandlerFunc(http.MethodPost, "/v1/recipe", web.Handle(recipeApi.Create))
-	router.HandlerFunc(http.MethodGet, "/v1/recipe/:id", web.Handle(recipeApi.Get))
+	router.HandlerFunc(http.MethodPost, "/v1/recipe", web.Handle(recipeAPI.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/recipe/:id", web.Handle(recipeAPI.Get))
 	return router
 }
