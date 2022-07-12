@@ -12,7 +12,8 @@ func Respond(w http.ResponseWriter, data any, statusCode int) error {
 		return nil
 	}
 
-	jsonData, err := json.Marshal(data)
+	jsonData, err := json.MarshalIndent(data, "", "\t")
+	jsonData = append(jsonData, '\n')
 	if err != nil {
 		return err
 	}
