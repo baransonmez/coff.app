@@ -2,11 +2,9 @@ package recipe
 
 import (
 	"fmt"
-	"github.com/baransonmez/coff.app/business/common"
 	"github.com/baransonmez/coff.app/business/core/recipe"
 	"github.com/baransonmez/coff.app/foundation/web"
 	"net/http"
-	"strings"
 )
 
 type Handlers struct {
@@ -32,13 +30,11 @@ func (h Handlers) Create(w http.ResponseWriter, r *http.Request) error {
 
 func (h Handlers) Get(w http.ResponseWriter, r *http.Request) error {
 
-	id := strings.TrimPrefix(r.URL.Path, "/recipe/")
-
 	ctx := r.Context()
 
-	recipeUUID, err := common.StringToID(id)
+	recipeUUID, err := web.ReadIDParam(r)
 	if err != nil {
-		return fmt.Errorf("string to uuid, id[%+v]: %w", id, err)
+		return err
 	}
 
 	prod, err := h.RecipeService.GetRecipe(ctx, recipeUUID)

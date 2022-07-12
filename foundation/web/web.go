@@ -2,7 +2,10 @@ package web
 
 import (
 	"encoding/json"
+	"github.com/baransonmez/coff.app/business/common"
 	"github.com/dimfeld/httptreemux/v5"
+	"github.com/google/uuid"
+	"github.com/julienschmidt/httprouter"
 	"net/http"
 )
 
@@ -24,4 +27,15 @@ func Decode(r *http.Request, val any) error {
 	}
 
 	return nil
+}
+
+func ReadIDParam(r *http.Request) (uuid.UUID, error) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := common.StringToID(params.ByName("id"))
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+	return id, nil
+
 }
