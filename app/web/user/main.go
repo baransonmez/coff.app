@@ -1,21 +1,21 @@
 package main
 
 import (
-	"fmt"
 	userGrpc "github.com/baransonmez/coff.app/app/web/user/input_adapters/grpc"
 	"github.com/baransonmez/coff.app/app/web/user/input_adapters/grpc/pb"
 	api "github.com/baransonmez/coff.app/app/web/user/input_adapters/handlers"
 	"github.com/baransonmez/coff.app/business/core/user"
 	userData "github.com/baransonmez/coff.app/business/core/user/output_adapters/persistence"
 	"github.com/baransonmez/coff.app/foundation/web"
+	"github.com/julienschmidt/httprouter"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"net/http"
+	"time"
 )
 
 func main() {
-	fmt.Println("web api generated")
 
 	userStore := userData.NewInMem()
 	userApi := api.Handlers{UserService: user.NewService(userStore)}
@@ -34,13 +34,23 @@ func main() {
 		}
 	}()
 
-	mux := createMux(userApi)
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	handler := routes(userApi)
+	servPort := ":8080"
+	srv := &http.Server{
+		Addr:         servPort,
+		Handler:      handler,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 45 * time.Second,
+	}
+
+	log.Printf("starting server on %s\n", servPort)
+	err = srv.ListenAndServe()
+	log.Fatal(err)
 }
 
-func createMux(userApi api.Handlers) *http.ServeMux {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/user", web.Handle(userApi.Create))
-	mux.HandleFunc("/user/", web.Handle(userApi.Get))
-	return mux
+func routes(recipeApi api.Handlers) *httprouter.Router {
+	router := httprouter.New()
+	router.HandlerFunc(http.MethodPost, "/v1/user", web.Handle(recipeApi.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/user/:id", web.Handle(recipeApi.Get))
+	return router
 }

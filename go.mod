@@ -8,6 +8,8 @@ require (
 	google.golang.org/protobuf v1.28.0
 )
 
+require github.com/julienschmidt/httprouter v1.3.0 // indirect
+
 require (
 	github.com/dimfeld/httptreemux/v5 v5.4.0
 	github.com/golang/protobuf v1.5.2 // indirect

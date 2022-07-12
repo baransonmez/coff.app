@@ -1,30 +1,41 @@
 package main
 
 import (
-	"fmt"
 	api "github.com/baransonmez/coff.app/app/web/coffee/input_adapters/handlers"
 	"github.com/baransonmez/coff.app/business/core/coffee"
 	coffeeData "github.com/baransonmez/coff.app/business/core/coffee/output_adapters/persistence"
 	"github.com/baransonmez/coff.app/foundation/web"
+	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
-	fmt.Println("web api generated")
 
 	coffStore := coffeeData.NewInMem()
 	coffeeApi := api.Handlers{
 		CoffeeService: coffee.NewService(coffStore),
 	}
 
-	mux := createMux(coffeeApi)
-	log.Fatal(http.ListenAndServe(":8085", mux))
+	handler := routes(coffeeApi)
+
+	servPort := "localhost:8085"
+	srv := &http.Server{
+		Addr:         servPort,
+		Handler:      handler,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 45 * time.Second,
+	}
+
+	log.Printf("starting server on %s\n", servPort)
+	err := srv.ListenAndServe()
+	log.Fatal(err)
 }
 
-func createMux(coffeeApi api.Handlers) *http.ServeMux {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/bean", web.Handle(coffeeApi.Create))
-	mux.HandleFunc("/bean/", web.Handle(coffeeApi.GetCoffee))
-	return mux
+func routes(recipeApi api.Handlers) *httprouter.Router {
+	router := httprouter.New()
+	router.HandlerFunc(http.MethodPost, "/v1/bean", web.Handle(recipeApi.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/bean/:id", web.Handle(recipeApi.GetCoffee))
+	return router
 }
