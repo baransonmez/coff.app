@@ -29,7 +29,7 @@ func main() {
 
 	handler := routes(recipeApi)
 
-	servPort := "localhost:8089"
+	servPort := ":8089"
 	srv := &http.Server{
 		Addr:         servPort,
 		Handler:      handler,

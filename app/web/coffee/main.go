@@ -20,7 +20,7 @@ func main() {
 
 	handler := routes(coffeeApi)
 
-	servPort := "localhost:8085"
+	servPort := ":8085"
 	srv := &http.Server{
 		Addr:         servPort,
 		Handler:      handler,
@@ -33,9 +33,9 @@ func main() {
 	log.Fatal(err)
 }
 
-func routes(recipeApi api.Handlers) *httprouter.Router {
+func routes(beanApi api.Handlers) *httprouter.Router {
 	router := httprouter.New()
-	router.HandlerFunc(http.MethodPost, "/v1/bean", web.Handle(recipeApi.Create))
-	router.HandlerFunc(http.MethodGet, "/v1/bean/:id", web.Handle(recipeApi.GetCoffee))
+	router.HandlerFunc(http.MethodPost, "/v1/bean", web.Handle(beanApi.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/bean/:id", web.Handle(beanApi.GetCoffee))
 	return router
 }

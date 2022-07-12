@@ -48,9 +48,9 @@ func main() {
 	log.Fatal(err)
 }
 
-func routes(recipeApi api.Handlers) *httprouter.Router {
+func routes(userApi api.Handlers) *httprouter.Router {
 	router := httprouter.New()
-	router.HandlerFunc(http.MethodPost, "/v1/user", web.Handle(recipeApi.Create))
-	router.HandlerFunc(http.MethodGet, "/v1/user/:id", web.Handle(recipeApi.Get))
+	router.HandlerFunc(http.MethodPost, "/v1/user", web.Handle(userApi.Create))
+	router.HandlerFunc(http.MethodGet, "/v1/user/:id", web.Handle(userApi.Get))
 	return router
 }
