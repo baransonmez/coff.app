@@ -1,7 +1,6 @@
 package recipe
 
 import (
-	"errors"
 	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
@@ -35,17 +34,16 @@ func (r NewRecipe) toDomainModel() Recipe {
 
 func (r *NewRecipe) Validate() error {
 	if r.UserID == "" {
-		return errors.New("user_id cannot be empty")
+		return &common.CannotBeEmptyError{Field: "user_id"}
 	}
 	if r.CoffeeID == "" {
-		return errors.New("coffee_id cannot be empty")
+		return &common.CannotBeEmptyError{Field: "coffee_id"}
 	}
 	if r.Description == "" {
-		return errors.New("description cannot be empty")
+		return &common.CannotBeEmptyError{Field: "description"}
 	}
-
 	if len(r.Steps) < 1 {
-		return errors.New("length of steps cannot be smaller than 1")
+		return &common.CannotBeSmallerError{Field: "steps length", Limit: 1}
 	}
 
 	return nil
