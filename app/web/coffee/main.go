@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	coffStore := coffeeData.NewInMem()
+	//coffStore := coffeeData.NewInMem()
+	coffStore, err := coffeeData.NewStore()
 	coffeeAPI := api.Handlers{
 		CoffeeService: coffee.NewService(coffStore),
 	}
@@ -29,7 +30,7 @@ func main() {
 
 	log.Printf("starting server on %s\n", servPort)
 
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	log.Fatal(err)
 }
 

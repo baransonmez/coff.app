@@ -7,14 +7,14 @@ import (
 )
 
 type Bean struct {
-	ID          string    `data:"id"`
-	Name        string    `data:"name"`
-	Roaster     string    `data:"roaster"`
-	Origin      string    `data:"origin"`
-	Price       int       `data:"price"`
-	RoastDate   time.Time `data:"roast_created"`
-	DateCreated time.Time `data:"date_created"`
-	DateUpdated time.Time `data:"date_updated"`
+	ID          string    `db:"id"`
+	Name        string    `db:"name"`
+	Roaster     string    `db:"roaster"`
+	Origin      string    `db:"origin"`
+	Price       int       `db:"price"`
+	RoastDate   time.Time `db:"roast_date"`
+	DateCreated time.Time `db:"date_created"`
+	DateUpdated time.Time `db:"date_updated"`
 }
 
 func (dbPrd *Bean) ToBean() *coffee.Bean {
