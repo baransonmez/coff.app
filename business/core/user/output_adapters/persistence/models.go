@@ -7,10 +7,10 @@ import (
 )
 
 type User struct {
-	ID          string    `data:"id"`
-	Name        string    `data:"name"`
-	DateCreated time.Time `data:"date_created"`
-	DateUpdated time.Time `data:"date_updated"`
+	ID          string    `db:"id"`
+	Name        string    `db:"name"`
+	DateCreated time.Time `db:"date_created"`
+	DateUpdated time.Time `db:"date_updated"`
 }
 
 func (dbPrd *User) ToUser() *user.User {

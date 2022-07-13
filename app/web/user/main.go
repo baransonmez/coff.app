@@ -16,7 +16,11 @@ import (
 )
 
 func main() {
-	userStore := userData.NewInMem()
+	//userStore := userData.NewInMem()
+	userStore, err := userData.NewStore()
+	if err != nil {
+		log.Fatal(err)
+	}
 	userAPI := api.Handlers{UserService: user.NewService(userStore)}
 
 	connAddress := "0.0.0.0:50051"
