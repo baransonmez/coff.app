@@ -56,16 +56,30 @@ infrastructure restrictions.
 │   ├── cli
 │   │   └── main.go
 │   └── web
-│       ├── handlers
-│       │   ├── coffee
-│       │   │   └── coffee_api.go
-│       │   ├── recipe
-│       │   │   └── recipe_api.go
-│       │   └── user
-│       │       └── user_api.go
-│       └── main.go
-.       .
-.       .
+│       ├── coffee
+│       │   ├── input_adapters
+│       │   │   └── handlers
+│       │   │       └── api.go
+│       │   └── main.go
+│       ├── recipe
+│       │   ├── input_adapters
+│       │   │   └── handlers
+│       │   │       └── api.go
+│       │   └── main.go
+│       └── user
+│           ├── input_adapters
+│           │   ├── grpc
+│           │   │   ├── pb
+│           │   │   │   ├── user.pb.go
+│           │   │   │   └── user_grpc.pb.go
+│           │   │   ├── protos
+│           │   │   │   └── user.proto
+│           │   │   └── server.go
+│           │   └── handlers
+│           │       └── api.go
+│           └── main.go
+.           .
+.           .
 ```
 
 The app package corresponds to incoming ports in hexagonal architecture. We can think of it as the place where use-cases are
