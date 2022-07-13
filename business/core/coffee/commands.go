@@ -1,7 +1,6 @@
 package coffee
 
 import (
-	"errors"
 	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
@@ -35,17 +34,16 @@ func (c NewCoffeeBean) toDomainModel() *Bean {
 
 func (c *NewCoffeeBean) Validate() error {
 	if c.Name == "" {
-		return errors.New("bean name cannot be empty")
+		return &common.CannotBeEmptyError{Field: "Name"}
 	}
 	if c.Origin == "" {
-		return errors.New("bean origin cannot be empty")
+		return &common.CannotBeEmptyError{Field: "Origin"}
 	}
 	if c.Roaster == "" {
-		return errors.New("bean roaster cannot be empty")
+		return &common.CannotBeEmptyError{Field: "Roaster"}
 	}
-
 	if c.Price < 1 {
-		return errors.New("bean price cannot be smaller than 1")
+		return &common.CannotBeSmallerError{Field: "Price", Limit: 1}
 	}
 
 	return nil
