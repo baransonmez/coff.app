@@ -1,6 +1,10 @@
 package recipe
 
-import "testing"
+import (
+	"github.com/baransonmez/coff.app/business/common"
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestNewRecipe_Validate(t *testing.T) {
 	type fields struct {
@@ -10,9 +14,9 @@ func TestNewRecipe_Validate(t *testing.T) {
 		Steps       []Step
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		wantErr bool
+		name   string
+		fields fields
+		err    error
 	}{
 		{name: "fill all fields success", fields: fields{
 			UserID:      "9141f16c-cdb4-47eb-93a5-681c93e297cf",
@@ -25,7 +29,7 @@ func TestNewRecipe_Validate(t *testing.T) {
 				Description:       "step 2",
 				DurationInSeconds: 14,
 			}},
-		}, wantErr: false},
+		}, err: nil},
 		{name: "user_id empty fail", fields: fields{
 			UserID:      "",
 			CoffeeID:    "9141f16c-cdb4-47eb-93a5-681c93e297cf",
@@ -37,7 +41,7 @@ func TestNewRecipe_Validate(t *testing.T) {
 				Description:       "step 2",
 				DurationInSeconds: 14,
 			}},
-		}, wantErr: true},
+		}, err: &common.CannotBeEmptyError{Field: "user_id"}},
 		{name: "coffee_id empty fail", fields: fields{
 			UserID:      "9141f16c-cdb4-47eb-93a5-681c93e297cf",
 			CoffeeID:    "",
@@ -49,7 +53,7 @@ func TestNewRecipe_Validate(t *testing.T) {
 				Description:       "step 2",
 				DurationInSeconds: 14,
 			}},
-		}, wantErr: true},
+		}, err: &common.CannotBeEmptyError{Field: "coffee_id"}},
 		{name: "description empty fail", fields: fields{
 			UserID:      "9141f16c-cdb4-47eb-93a5-681c93e297cf",
 			CoffeeID:    "9141f16c-cdb4-47eb-93a5-681c93e297cf",
@@ -61,13 +65,13 @@ func TestNewRecipe_Validate(t *testing.T) {
 				Description:       "step 2",
 				DurationInSeconds: 14,
 			}},
-		}, wantErr: true},
-		{name: "description empty fail", fields: fields{
+		}, err: &common.CannotBeEmptyError{Field: "description"}},
+		{name: "steps size smaller than 1 fail", fields: fields{
 			UserID:      "9141f16c-cdb4-47eb-93a5-681c93e297cf",
 			CoffeeID:    "9141f16c-cdb4-47eb-93a5-681c93e297cf",
 			Description: "desc desc",
 			Steps:       []Step{},
-		}, wantErr: true},
+		}, err: &common.CannotBeSmallerError{Field: "steps length", Limit: 1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -77,9 +81,8 @@ func TestNewRecipe_Validate(t *testing.T) {
 				Description: tt.fields.Description,
 				Steps:       tt.fields.Steps,
 			}
-			if err := r.Validate(); (err != nil) != tt.wantErr {
-				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
-			}
+			err := r.Validate()
+			assert.Equal(t, err, tt.err)
 		})
 	}
 }
