@@ -1,7 +1,6 @@
 package user
 
 import (
-	"errors"
 	"github.com/baransonmez/coff.app/business/common"
 	"time"
 
@@ -27,7 +26,8 @@ func (u NewUser) toDomainModel() User {
 
 func (u *NewUser) Validate() error {
 	if u.Name == "" {
-		return errors.New("user name cannot be empty")
+		//return &common.CannotBeSmallerError{Field: "name", Limit: 2}
+		return &common.CannotBeEmptyError{Field: "name"}
 	}
 	return nil
 }
