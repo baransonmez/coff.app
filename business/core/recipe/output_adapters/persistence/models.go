@@ -7,18 +7,22 @@ import (
 )
 
 type Recipe struct {
-	ID          string    `data:"id"`
-	UserID      string    `data:"user_id"`
-	CoffeeID    string    `data:"coffee_id"`
-	Description string    `data:"desc"`
-	Steps       []Step    `data:"steps"`
-	DateCreated time.Time `data:"date_created"`
-	DateUpdated time.Time `data:"date_updated"`
+	ID          string    `db:"id"`
+	UserID      string    `db:"user_id"`
+	CoffeeID    string    `db:"coffee_id"`
+	Description string    `db:"description"`
+	Steps       []Step    `db:"step"`
+	DateCreated time.Time `db:"date_created"`
+	DateUpdated time.Time `db:"date_updated"`
 }
 
 type Step struct {
-	Description       string `data:"desc"`
-	DurationInSeconds int32  `data:"duration"`
+	RecipeID          string    `db:"recipe_id"`
+	StepOrder         string    `db:"step_order"`
+	Description       string    `db:"description"`
+	DurationInSeconds int32     `db:"duration_in_seconds"`
+	DateCreated       time.Time `db:"date_created"`
+	DateUpdated       time.Time `db:"date_updated"`
 }
 
 func (dbRecipe *Recipe) ToRecipe() *recipe.Recipe {
@@ -49,6 +53,7 @@ func (s Step) stepToDomainModel() recipe.Step {
 	return recipe.Step{
 		Description:       s.Description,
 		DurationInSeconds: s.DurationInSeconds,
+		Order:             s.StepOrder,
 	}
 }
 

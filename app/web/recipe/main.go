@@ -25,11 +25,16 @@ func main() {
 	defer func(conn *grpc.ClientConn) {
 		err := conn.Close()
 		if err != nil {
-
+			log.Fatalln(err)
 		}
 	}(conn)
 
-	recipeStore := recipeData.NewInMem()
+	//recipeStore := recipeData.NewInMem()
+	recipeStore, err := recipeData.NewStore()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	userClient := userClientGrpc.NewClient(conn)
 	recipeAPI := api.Handlers{RecipeService: recipe.NewService(recipeStore, userClient)}
 
